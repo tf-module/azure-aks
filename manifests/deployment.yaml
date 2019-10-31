@@ -1,0 +1,26 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: magpie-deployment
+spec:
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      # unlike pod-nginx.yaml, the name is not included in the meta data as a unique name is
+      # generated from the deployment name
+      labels:
+        app: magpie
+    spec:
+      dnsPolicy: ClusterFirst
+      containers:
+      - name: magpie
+        image: bywang/magpie
+        ports:
+        - containerPort: 80
+      resources:
+        limits:
+          cpu: 300m
+          memory: 200Mi
+        requests:
+          cpu: 200m
+          memory: 100Mi
