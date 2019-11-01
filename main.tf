@@ -17,7 +17,7 @@ resource "azurerm_kubernetes_cluster" "k8s_cluster" {
   agent_pool_profile {
     name                = "standard"
     count               = 1
-    max_count           = 3
+    max_count           = 5
     max_pods            = 110
     min_count           = 1
     os_disk_size_gb     = 100
@@ -30,10 +30,10 @@ resource "azurerm_kubernetes_cluster" "k8s_cluster" {
   network_profile {
     network_plugin     = "azure"
     network_policy     = "azure"
-    dns_service_ip     = "172.16.0.10"
     docker_bridge_cidr = "172.17.0.1/16"
-    service_cidr       = "172.16.0.0/16"
-    load_balancer_sku  = "standard"
+    dns_service_ip     = "10.0.0.10"
+    service_cidr       = "10.0.0.0/16"
+    load_balancer_sku  = "Standard"
   }
   addon_profile {
     aci_connector_linux {
@@ -53,5 +53,5 @@ resource "azurerm_kubernetes_cluster" "k8s_cluster" {
 }
 
 output "kube_config_notice" {
-  value = "Plz run to fetch kubeconfig to local:\n aks get-credentials --name ${azurerm_kubernetes_cluster.k8s_cluster.name} --resource-group ${data.azurerm_resource_group.primary.name}"
+  value = "Plz run to fetch kubeconfig to local:\n az aks get-credentials --name ${azurerm_kubernetes_cluster.k8s_cluster.name} --resource-group ${data.azurerm_resource_group.primary.name}"
 }
