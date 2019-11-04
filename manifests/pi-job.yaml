@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi-2
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      nodeName: virtual-node-aci-linux
+      containers:
+      - name: pi
+        image: perl
+        command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+        resources:
+          limits:
+            cpu: 1
+            memory: 1G
+          requests:
+            cpu: 1
+            memory: 1G
+      restartPolicy: Never
+  backoffLimit: 4

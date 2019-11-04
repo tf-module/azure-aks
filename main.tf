@@ -15,6 +15,19 @@ resource "azurerm_kubernetes_cluster" "k8s_cluster" {
   kubernetes_version  = "1.14.7"
 
   agent_pool_profile {
+    name                = "low"
+    count               = 1
+    max_count           = 2
+    min_count           = 1
+    os_disk_size_gb     = 100
+    os_type             = "Linux"
+    type                = "VirtualMachineScaleSets"
+    enable_auto_scaling = true
+    vm_size             = "Standard_B2s"
+    vnet_subnet_id      = azurerm_subnet.aks_subnet.id
+  }
+
+  agent_pool_profile {
     name                = "standard"
     count               = 1
     max_count           = 5
@@ -27,6 +40,7 @@ resource "azurerm_kubernetes_cluster" "k8s_cluster" {
     vm_size             = "Standard_A2m_v2"
     vnet_subnet_id      = azurerm_subnet.aks_subnet.id
   }
+
   network_profile {
     network_plugin     = "azure"
     network_policy     = "azure"
